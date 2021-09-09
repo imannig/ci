@@ -1,0 +1,50 @@
+name: Halium Build
+
+on: 
+  push:
+
+jobs:
+
+  build:
+    runs-on: ubuntu-18.04
+
+    env:
+      WORK_DIR: /home/runner/work/halium/
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    
+    - name: setup environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+        openjdk-8-jdk android-tools-adb bc \
+        bison build-essential curl flex g++-multilib \
+        gcc-multilib gnupg gperf imagemagick lib32ncurses5-dev \
+        lib32readline-dev lib32z1-dev liblz4-tool \
+        libncurses5-dev libsdl1.2-dev libssl-dev libwxgtk3.0-dev \
+        libxml2 libxml2-utils lzop pngcrush rsync schedtool \
+        squashfs-tools xsltproc yasm zip zlib1g-dev git
+        sudo docker rmi `docker images -q`
+        sudo rm -rf \
+          /usr/share/dotnet \
+          /etc/mysql \
+          /etc/php
+        mkdir -p ~/bin
+        wget 'https://storage.googleapis.com/git-repo-downloads/repo' -P ~/bin
+        sudo mv ~/bin/repo /usr/bin
+        sudo chmod +x /usr/bin/repo
+        git config --global user.name "Stealth1226"
+        git config --global user.email "rishawniyer06@gmail.com"
+    - name: sync source
+      run: |
+        mkdir -p $WORK_DIR
+        cd $WORK_DIR
+        repo init -u https://github.com/Halium/android -b halium-7.1 --depth=1
+        repo sync -c  --force-sync --optimized-fetch --no-tags --no-clone-bundle --prune -j$(nproc --all) || true
+    
+    - name: build 
+      run: |
+        cd $WORK_DIR
+        curl https://raw.githubusercontent.com/Stealth1226/halium_ci/main/build.sh | bash
