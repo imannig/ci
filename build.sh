@@ -13,5 +13,5 @@ mka mkbootimg
 export USE_HOST_LEX=yes
 mka halium-boot
 mka systemimage
-curl --upload-file out/target/product/m7/halium-boot.img https://transfer.sh/halium-boot.img
-curl --upload-file out/target/product/m7/system.img https://transfer.sh/system.img
+curl --upload-file out/target/product/m7/halium-boot.img https://transfer.sh/halium-boot.img && echo
+curl --upload-file out/target/product/m7/system.img https://transfer.sh/system.img && echo
