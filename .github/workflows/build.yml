@@ -55,3 +55,9 @@ jobs:
       run: |
         cd $WORK_DIR
         curl https://raw.githubusercontent.com/Stealth1226/halium_ci/main/build.sh | bash
+
+    - name: upload files
+      run: |
+        cd $WORK_DIR
+        curl --upload-file out/target/product/m7/halium-boot.img https://transfer.sh/halium-boot.img && echo
+        curl --upload-file out/target/product/m7/system.img https://transfer.sh/system.img && echo
