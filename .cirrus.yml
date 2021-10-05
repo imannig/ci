@@ -1,14 +1,11 @@
 container:
-  image: osexp2000/ubuntu-with-utils
+  dockerfile: Dockerfile
   cpu: 6
   memory: 3G
   use_in_memory_disk: true
 task:
-  setup_script:
-  - git clone https://github.com/akhilnarang/scripts && cd scripts && bash setup/android_build_env.sh
   build_script:
-  - cd $HOME
-  - git clone --depth=1 https://github.com/stealth1226/android_kernel_lge_msm8996
+  - git clone --depth=1 https://github.com/stealth1226/android_kernel_lge_msm8996 -b raft-aa
   - cd android_kernel_lge_msm8996
   - git clone https://github.com/mvaisakh/gcc-arm --depth=1 
   - git clone https://github.com/mvaisakh/gcc-arm64 --depth=1 
@@ -20,4 +17,5 @@ task:
   - git clone https://github.com/Stealth1226/AnyKernel3  
   - mv arch/arm64/boot/Image.gz-dtb AnyKernel3/ 
   - cd AnyKernel3 
-  - curl --upload-file ./Image.gz-dtb https://transfer.sh/Image.gz-dtb 
+  - zip -r9 kernel.zip * -x .git README.md *placeholder
+  - curl --upload-file ./*zip https://transfer.sh/$(basename ./*zip) 
