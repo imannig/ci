@@ -5,7 +5,7 @@ container:
   use_in_memory_disk: true
 task:
   build_script:
-  - git clone --depth=1 https://github.com/stealth1226/android_kernel_lge_msm8996 -b als
+  - git clone --depth=1 https://github.com/stealth1226/android_kernel_lge_msm8996 -b sailboat
   - cd android_kernel_lge_msm8996
   - git clone https://github.com/mvaisakh/gcc-arm --depth=1 
   - git clone https://github.com/mvaisakh/gcc-arm64 --depth=1 
