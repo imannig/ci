@@ -5,8 +5,8 @@ container:
   use_in_memory_disk: true
 task:
   build_script:
-  - git clone --depth=1 https://github.com/lighthouse-os-devices/android_kernel_lge_msm8996
-  - cd android_kernel_lge_msm8996 && git fetch origin raft-testing && git config user.name Stealth1226 && git config user.email rishawniyer06@gmail.com && git cherry-pick fa8f9ffe0639f8d30a619eae381e42a332be8908 && git cherry-pick 85586b9c9392c8471e12d1fdc25e666b6ef7b8a1
+  - git clone --depth=1 https://github.com/stealth1226/android_kernel_lge_msm8996 -b kernel.lnx.3.18.r34-rel
+  - cd android_kernel_lge_msm8996
   - git clone https://github.com/mvaisakh/gcc-arm --depth=1 
   - git clone https://github.com/mvaisakh/gcc-arm64 --depth=1 
   - export CROSS_COMPILE=gcc-arm64/bin/aarch64-elf- 
@@ -17,5 +17,5 @@ task:
   - git clone https://github.com/Stealth1226/AnyKernel3  
   - mv arch/arm64/boot/Image.gz-dtb AnyKernel3/ 
   - cd AnyKernel3 
-#  - zip -r9 kernel.zip * -x .git README.md *placeholder
-  - curl --upload-file ./Image.gz-dtb https://transfer.sh/Image.gz-dtb
+  - zip -r9 kernel.zip * -x .git README.md *placeholder
+  - curl --upload-file ./kernel.zip https://transfer.sh/kernel.zip
