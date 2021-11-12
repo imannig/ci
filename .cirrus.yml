@@ -30,7 +30,7 @@ task:
       - cd ~/work
       - repo init --depth=1 --no-repo-verify -u $MANIFEST -g default,-mips,-darwin,-notdefault 
       - git clone https://github.com/Stealth1226/local_manifest --depth 1 -b sailboat .repo/local_manifests
-      - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j31 || true
+      - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j20 || true
       - echo "============================"
       - echo "Syncing Complete!"
       - echo "============================"
