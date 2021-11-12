@@ -10,7 +10,7 @@ task:
   container:
       dockerfile: Dockerfile
       cpu: 8
-      memory: 32G
+      memory: 20G
         
   Build-Env-Setup_script:
        - git config --global user.name "Stealth1226"
