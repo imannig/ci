@@ -3,45 +3,47 @@ env:
     DEVICE: rs988
     TARGET: lighthouse
     LUNCH_COMBO: lighthouse_$DEVICE-eng
+    rclone_config: "ENCRYPTED[d4ad8875c2d8502b6f4a1efa6fba25e45cfb0cbc47972298391471b4a0153addf9579d7aee8f78efbdc0f38c645a3423]"
 
 task:
-  name: "Setting Up, Syncing, Building and Uploading..."
+  name: "build"
   timeout_in: 240m  
   container:
       dockerfile: Dockerfile
       cpu: 8
       memory: 20G
         
+#  cache_background_script:
+#     - cd /tmp     
+#     - down() { aria2c https://drive.stealth1226.workers.dev/0:/ccache/ccache.tar.gz -x16 -s50 || down;}
+#     - down
+#     - tar xf ccache.tar.gz
+
   Sync_script:
-      - echo "============================"
-      - echo "Syncing The Sources..."
-      - echo "============================"
+      - mkdir -p ~/.config/rclone
+      - echo "$rclone_config" > ~/.config/rclone/rclone.conf
       - mkdir -p ~/lighthouse
       - cd ~/lighthouse
       - repo init --depth=1 --no-repo-verify -u $MANIFEST -g default,-mips,-darwin,-notdefault 
       - git clone https://github.com/Stealth1226/local_manifest --depth 1 -b sailboat .repo/local_manifests
       - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j$(nproc --all) || true
-      - echo "============================"
-      - echo "Syncing Complete!"
-      - echo "============================"
 
   Build_script:
-      - echo "============================"
-      - echo "Starting the Build..."
-      - echo "============================"
       - cd ~/lighthouse
       - . build/envsetup.sh
       - lunch $LUNCH_COMBO
-      - make $TARGET  -j$(nproc --all)
+      - export CCACHE_DIR=/tmp/ccache && export CCACHE_EXEC=$(which ccache) && export USE_CCACHE=1 && ccache -M 20G && ccache -o compression=true 
+      - make $TARGET  -j$(nproc --all) &
+      - sleep 210m
+      - kill %1
      
   Upload_script:
-      - echo "============================"
-      - echo "Uploading the Build..."
-      - echo "============================"
-      - cd ~/lighthouse
-      - cd out/target/product/$DEVICE
-      - ls -lh
-      - pwd
-      - curl --upload-file *OFFICIAL*.zip https://transfer.sh/$(basename ./*OFFICIAL*.zip); echo
+#      - cd ~/lighthouse
+#      - cd out/target/product/$DEVICE
+#      - ls -lh
+#      - pwd
+#      - curl --upload-file *OFFICIAL*.zip https://transfer.sh/$(basename ./*OFFICIAL*.zip); echo
+      - cd && tar --use-compress-program="pigz -k -1 " -cf ccache.tar.gz /tmp/ccache
+      - rclone copy ccache.tar.gz stealth:ccache/ -P
         
 
