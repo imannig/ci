@@ -12,25 +12,15 @@ task:
       cpu: 8
       memory: 20G
         
-  Build-Env-Setup_script:
-       - git config --global user.name "Stealth1226"
-       - git config --global user.email "rishawniyer06@gmail.com"
-       - cd
-  
-  Storage-Checker_script:
-      - df -h
-      - lsblk
-      - ls -l -a -h
-  
   Sync_script:
       - echo "============================"
       - echo "Syncing The Sources..."
       - echo "============================"
-      - mkdir -p ~/work
-      - cd ~/work
+      - mkdir -p ~/lighthouse
+      - cd ~/lighthouse
       - repo init --depth=1 --no-repo-verify -u $MANIFEST -g default,-mips,-darwin,-notdefault 
       - git clone https://github.com/Stealth1226/local_manifest --depth 1 -b sailboat .repo/local_manifests
-      - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j20 || true
+      - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j$(nproc --all) || true
       - echo "============================"
       - echo "Syncing Complete!"
       - echo "============================"
@@ -39,20 +29,19 @@ task:
       - echo "============================"
       - echo "Starting the Build..."
       - echo "============================"
-      - cd ~/work
+      - cd ~/lighthouse
       - . build/envsetup.sh
       - lunch $LUNCH_COMBO
-      - make -j31 $TARGET
+      - make $TARGET  -j$(nproc --all)
      
   Upload_script:
       - echo "============================"
       - echo "Uploading the Build..."
       - echo "============================"
-      - cd ~/work
+      - cd ~/lighthouse
       - cd out/target/product/$DEVICE
       - ls -lh
       - pwd
-      - chmod 777 *
       - curl --upload-file *OFFICIAL*.zip https://transfer.sh/$(basename ./*OFFICIAL*.zip); echo
         
 
