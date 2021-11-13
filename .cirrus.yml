@@ -43,7 +43,8 @@ task:
 #      - ls -lh
 #      - pwd
 #      - curl --upload-file *OFFICIAL*.zip https://transfer.sh/$(basename ./*OFFICIAL*.zip); echo
-      - cd && tar --use-compress-program="pigz -k -1 " -cf ccache.tar.gz /tmp/ccache
+      - sleep 20
+      - cd && cp -r /tmp/ccache . && tar --use-compress-program="pigz -k -1 " -cf ccache.tar.gz ./ccache
       - rclone copy ccache.tar.gz stealth:ccache/ -P
         
 
