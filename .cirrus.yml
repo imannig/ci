@@ -7,7 +7,7 @@ env:
 
 task:
   name: "build"
-  timeout_in: 240m  
+  timeout_in: 120m  
   container:
       dockerfile: Dockerfile
       cpu: 8
@@ -34,7 +34,7 @@ task:
       - lunch $LUNCH_COMBO
       - export CCACHE_DIR=/tmp/ccache && export CCACHE_EXEC=$(which ccache) && export USE_CCACHE=1 && ccache -M 20G && ccache -o compression=true 
       - make $TARGET  -j$(nproc --all) &
-      - sleep 210m
+      - sleep 85m
       - kill %1
      
   Upload_script:
