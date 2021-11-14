@@ -13,11 +13,11 @@ task:
       cpu: 8
       memory: 20G
         
-#  cache_background_script:
-#     - cd /tmp     
-#     - down() { aria2c https://drive.stealth1226.workers.dev/0:/ccache/ccache.tar.gz -x16 -s50 || down;}
-#     - down
-#     - tar xf ccache.tar.gz
+  cache_background_script:
+     - cd /tmp     
+     - down() { aria2c https://drive.stealth1226.workers.dev/0:/ccache/ccache.tar.gz -x16 -s50 || down;}
+     - down
+     - tar xf ccache.tar.gz
 
   Sync_script:
       - mkdir -p ~/.config/rclone
