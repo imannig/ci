@@ -1,6 +1,6 @@
 env:
     MANIFEST: https://github.com/lighthouse-os/manifest.git -b sailboat
-    DEVICE: rs988
+    DEVICE: h850
     TARGET: lighthouse
     LUNCH_COMBO: lighthouse_$DEVICE-eng
     rclone_config: "ENCRYPTED[d4ad8875c2d8502b6f4a1efa6fba25e45cfb0cbc47972298391471b4a0153addf9579d7aee8f78efbdc0f38c645a3423]"
@@ -38,11 +38,10 @@ task:
       - kill %1
      
   Upload_script:
-#      - cd ~/lighthouse
-#      - cd out/target/product/$DEVICE
-#      - ls -lh
-#      - pwd
-#      - curl --upload-file *OFFICIAL*.zip https://transfer.sh/$(basename ./*OFFICIAL*.zip); echo
+      - cd ~/lighthouse
+      - cd out/target/product/$DEVICE
+      - ls -lh
+      - curl --upload-file *OFFICIAL*.zip https://transfer.sh/$(basename ./*OFFICIAL*.zip); echo
       - sleep 20
       - cd && cp -r /tmp/ccache . && tar --use-compress-program="pigz -k -1 " -cf ccache.tar.gz ./ccache
       - rclone copy ccache.tar.gz stealth:ccache/ -P
