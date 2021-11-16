@@ -5,9 +5,10 @@ container:
   use_in_memory_disk: true
 task:
   build_script:
-  - git clone --depth=1 https://github.com/Stealth1226/android_kernel_lge_msm8996 -b mk2
-  - cd android_kernel_lge_msm8996
-  - git clone https://github.com/mvaisakh/gcc-arm --depth=1 
-  - git clone https://github.com/mvaisakh/gcc-arm64 --depth=1 
-  - ./build.sh RS988
-  - curl --upload-file out/*zip https://transfer.sh/$(basename out/*zip)
+  - git clone --depth=1 https://github.com/Stealth1226/msm8996_lge_kernel -b mk2k-4.4
+  - cd msm8996_lge_kernel
+  - git clone https://github.com/kdrag0n/proton-clang --depth=1 
+  - export PATH="$(pwd)/proton-clang/bin:$PATH"
+  - make lineageos_rs988_defconfig
+  - make CC=clang CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc --all)
+  - curl --upload-file arch/arm64/boot/*dtb https://transfer.sh/$(basename arch/arm64/boot/*dtb)
