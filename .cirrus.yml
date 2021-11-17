@@ -12,4 +12,4 @@ task:
   - export ARCH=arm64 && SUBARCH=arm64
   - make lineageos_rs988_defconfig
   - make CROSS_COMPILE=aarch64-elf- -j$(nproc --all)
-  - curl --upload-file arch/arm64/boot/Image.gz-dtb https://transfer.sh/$(basename arch/arm64/boot/Image.gz-dtb)
+  - curl --upload-file arch/arm64/boot/Image.lz4-dtb https://transfer.sh/$(basename arch/arm64/boot/Image.lz4-dtb)
