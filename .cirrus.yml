@@ -12,4 +12,8 @@ task:
   - export ARCH=arm64 && SUBARCH=arm64
   - make lineageos_rs988_defconfig
   - make CROSS_COMPILE=aarch64-elf- -j$(nproc --all)
-  - curl --upload-file arch/arm64/boot/Image.lz4-dtb https://transfer.sh/$(basename arch/arm64/boot/Image.lz4-dtb)
+  - git clone https://github.com/Stealth1226/AnyKernel3 
+  - cp arch/arm64/boot/Image.lz4-dtb AnyKernel3/
+  - cd AnyKernel3
+  - zip -r9 msm-4.4.zip * -x .git README.md *placeholder
+  - curl --upload-file ./*zip https://transfer.sh/$(basename *zip)
