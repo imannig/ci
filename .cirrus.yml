@@ -1,5 +1,4 @@
 env:
-    MANIFEST: https://github.com/lighthouse-os/manifest.git -b sailboat
     GH-TOKEN: "ENCRYPTED[302a3e6d5ebf39ed7baa069852e86218893ebd28a9e5d39624c53d5f72b19721fc7357172890d0ec0486a9f863a82338]"
 
 task:
@@ -15,8 +14,8 @@ task:
       - git config --global credential.helper store
       - mkdir -p ~/lighthouse
       - cd ~/lighthouse
-      - repo init --depth=1 --no-repo-verify -u $MANIFEST -g default,-mips,-darwin,-notdefault 
-      - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j$(nproc --all) || true
+      - repo init --depth=1 -u git://github.com/lighthouse-os/manifest.git -b sailboat -g default,-mips,-darwin,-notdefault
+      - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8 || repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8 || true
 
   Merge_script:
       - cd ~/lighthouse
