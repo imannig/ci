@@ -1,50 +1,25 @@
 env:
     MANIFEST: https://github.com/lighthouse-os/manifest.git -b sailboat
-    DEVICE: h850
-    TARGET: lighthouse
-    LUNCH_COMBO: lighthouse_$DEVICE-eng
-    rclone_config: "ENCRYPTED[d4ad8875c2d8502b6f4a1efa6fba25e45cfb0cbc47972298391471b4a0153addf9579d7aee8f78efbdc0f38c645a3423]"
+    GH-TOKEN: "ENCRYPTED[302a3e6d5ebf39ed7baa069852e86218893ebd28a9e5d39624c53d5f72b19721fc7357172890d0ec0486a9f863a82338]"
 
 task:
   name: "build"
   timeout_in: 120m  
   container:
       dockerfile: Dockerfile
-      cpu: 8
-      memory: 20G
-        
-  cache_background_script:
-     - cd /tmp     
-     - down() { aria2c https://drive.stealth1226.workers.dev/0:/ccache/ccache.tar.gz -x16 -s50 || down;}
-     - down
-     - tar xf ccache.tar.gz
+      cpu: 4
+      memory: 4G
 
   Sync_script:
-      - mkdir -p ~/.config/rclone
-      - echo "$rclone_config" > ~/.config/rclone/rclone.conf
+      - echo "https://Stealth1226:$GH-TOKEN@github.com" > ~/.git-credentials
+      - git config --global credential.helper store
       - mkdir -p ~/lighthouse
       - cd ~/lighthouse
       - repo init --depth=1 --no-repo-verify -u $MANIFEST -g default,-mips,-darwin,-notdefault 
-      - git clone https://github.com/Stealth1226/local_manifest --depth 1 -b sailboat .repo/local_manifests
       - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j$(nproc --all) || true
 
-  Build_script:
+  Merge_script:
       - cd ~/lighthouse
-      - . build/envsetup.sh
-      - lunch $LUNCH_COMBO
-      - export CCACHE_DIR=/tmp/ccache && export CCACHE_EXEC=$(which ccache) && export USE_CCACHE=1 && ccache -M 20G && ccache -o compression=true 
-      - make $TARGET  -j$(nproc --all) || make $TARGET -j$(nproc --all)
-     # - make $TARGET  -j$(nproc --all) &
-     # - sleep 85m
-     # - kill %1
-     
-  Upload_script:
-      - cd ~/lighthouse
-      - cd out/target/product/$DEVICE
-      - ls -lh
-      - curl --upload-file *OFFICIAL*.zip https://transfer.sh/$(basename ./*OFFICIAL*.zip); echo
-      - sleep 20
-      - cd && cp -r /tmp/ccache . && tar --use-compress-program="pigz -k -1 " -cf ccache.tar.gz ./ccache
-      - rclone copy ccache.tar.gz stealth:ccache/ -P
-        
-
+      - wget https://raw.githubusercontent.com/Stealth1226/ci/merger/merge-aosp.sh
+      - bash merge-aosp.sh r16 
+      - tmate -S /tmp/tmate.sock new-session -d && tmate -S /tmp/tmate.sock wait tmate-ready && tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}' && sleep 2h
