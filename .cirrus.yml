@@ -1,13 +1,15 @@
 container:
   dockerfile: Dockerfile
   cpu: 6
-  memory: 12G
+  memory: 10G
   use_in_memory_disk: true
 task:
   build_script:
-  - git clone --depth=1 https://github.com/Stealth1226/android_kernel_lge_msm8996 -b mk2
-  - cd android_kernel_lge_msm8996
-  - git clone https://github.com/mvaisakh/gcc-arm --depth=1 
-  - git clone https://github.com/mvaisakh/gcc-arm64 --depth=1 
-  - ./build.sh RS988
-  - curl --upload-file out/*zip https://transfer.sh/$(basename out/*zip)
+  - git clone --depth=1 https://github.com/Stealth1226/kernel_xiaomi_sm6250
+  - cd kernel_xiaomi_sm6250
+  - mkdir out
+  - git clone https://github.com/kdrag0n/proton-clang --depth=1 
+  - export ARCH=arm64 && SUBARCH=arm64 && export PATH="$(pwd)/proton-clang/bin:$PATH" && make O=out cust_defconfig && make -j$(nproc --all) O=out CC=clang CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- 
+  - curl -T out/arch/arm64/boot/Image.gz-dtb temp.sh; echo
+  - curl -T out/arch/arm64/boot/dtbo.img temp.sh; echo
+ 
