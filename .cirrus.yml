@@ -10,6 +10,6 @@ task:
   - mkdir out
   - git clone https://github.com/kdrag0n/proton-clang --depth=1 
   - export ARCH=arm64 && SUBARCH=arm64 && export PATH="$(pwd)/proton-clang/bin:$PATH" && make O=out cust_defconfig && make -j$(nproc --all) O=out CC=clang CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- 
-  - curl -T out/arch/arm64/boot/Image.gz-dtb temp.sh; echo
-  - curl -T out/arch/arm64/boot/dtbo.img temp.sh; echo
+  - git clone https://github.com/Stealth1226/AnyKernel3 && mv out/arch/arm64/boot/Image.gz-dtb out/arch/arm64/boot/dtbo.img AnyKernel3/ && cd AnyKernel3 && zip -r9 LHKRNL.zip * -x .git README.md *placeholder 
+  - curl -T LHKRNL.zip temp.sh; echo
  
