@@ -5,7 +5,7 @@ container:
   use_in_memory_disk: true
 task:
   build_script:
-  - git clone --depth=1 https://github.com/Stealth1226/kernel_xiaomi_sm6250
+  - git clone --depth=1 https://github.com/lighthouse-os-devices/kernel_xiaomi_sm6250
   - cd kernel_xiaomi_sm6250
   - mkdir out
   - git clone https://github.com/kdrag0n/proton-clang --depth=1 
