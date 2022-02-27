@@ -1,15 +1,10 @@
 container:
   dockerfile: Dockerfile
-  cpu: 6
-  memory: 10G
+  cpu: 2
+  memory: 4G
   use_in_memory_disk: true
 task:
   build_script:
-  - git clone --depth=1 https://github.com/lighthouse-os-devices/kernel_xiaomi_sm6250
-  - cd kernel_xiaomi_sm6250
-  - mkdir out
-  - git clone https://github.com/kdrag0n/proton-clang --depth=1 
-  - export ARCH=arm64 && SUBARCH=arm64 && export PATH="$(pwd)/proton-clang/bin:$PATH" && make O=out cust_defconfig && make -j$(nproc --all) O=out CC=clang CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- 
-  - git clone https://github.com/Stealth1226/AnyKernel3 && mv out/arch/arm64/boot/Image.gz-dtb out/arch/arm64/boot/dtbo.img AnyKernel3/ && cd AnyKernel3 && zip -r9 LHKRNL.zip * -x .git README.md *placeholder 
-  - curl -T LHKRNL.zip temp.sh; echo
- 
+  - tmate -S /tmp/tmate.sock new-session -d && tmate -S /tmp/tmate.sock wait tmate-ready && send_shell=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}') && echo "$send_shell" && sleep 2h
+
+
