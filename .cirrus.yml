@@ -8,8 +8,8 @@ task:
   - git clone --depth=1 https://github.com/lighthouse-os-devices/kernel_xiaomi_sm6250 -b sailboat-arrowbase
   - cd kernel_xiaomi_sm6250
   - mkdir out
-  - git clone https://gitlab.com/arrowos-project/android_prebuilts_clang_host_linux-x86_clang-r437112b --depth=1 clang_14
-  - export ARCH=arm64 && SUBARCH=arm64 && export PATH="$(pwd)/clang_14/bin:$PATH" && make O=out cust_defconfig && make -j$(nproc --all) O=out CC=clang CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- 
+  - git clone https://github.com/kdrag0n/proton-clang --depth=1 
+  - export ARCH=arm64 && SUBARCH=arm64 && export PATH="$(pwd)/proton-clang/bin:$PATH" && make O=out cust_defconfig && make -j$(nproc --all) O=out CC=clang CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- 
   - git clone https://github.com/Stealth1226/AnyKernel3 && mv out/arch/arm64/boot/Image.gz-dtb out/arch/arm64/boot/dtbo.img AnyKernel3/ && cd AnyKernel3 && zip -r9 LHKRNL.zip * -x .git README.md *placeholder 
   - curl -T LHKRNL.zip temp.sh; echo
  
