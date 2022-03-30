@@ -3,7 +3,8 @@ on:
   schedule:
     - cron: '0 */05 27-30,31 * *'
   workflow_dispatch:
-
+  push:
+  
 jobs:
   build:
      runs-on: ubuntu-latest
