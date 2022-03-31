@@ -1,7 +1,7 @@
 name: Keeper boi
 on:
   schedule:
-    - cron: '0 */05 * * *'
+    - cron: '0 */6 * * *'
   workflow_dispatch:
   push:
   
