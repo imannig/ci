@@ -1,7 +1,5 @@
 name: Keeper boi
 on:
-  schedule:
-    - cron: '0 */6 * * *'
   workflow_dispatch:
   push:
   
@@ -11,5 +9,5 @@ jobs:
      steps:
 
        - name: Run bot
-         run: echo ${{ secrets.TOKEN }} > ~/.git-credentials && git config --global credential.helper store && git clone https://github.com/cannedshroud/lighthousemirrorbot && cd lighthousemirrorbot && pip3 install -r requirements.txt && sudo apt install sshpass && sudo apt install aria2 && sudo apt install rsync && curl https://rclone.org/install.sh | sudo bash && python3 bot.py & sleep 5h && exit 0
+         run: echo ${{ secrets.TOKEN }} > ~/.git-credentials && git config --global credential.helper store && git clone https://github.com/cannedshroud/lighthousemirrorbot && cd lighthousemirrorbot && pip3 install -r requirements.txt && sudo apt install sshpass && sudo apt install aria2 && sudo apt install rsync && curl https://rclone.org/install.sh | sudo bash && python3 bot.py & sleep 5h && echo loop >> loop.txt && git add . && git commit -m "loop" && git push &&  exit 0
 
