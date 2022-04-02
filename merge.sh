@@ -13,3 +13,4 @@ git fetch https://source.codeaurora.org/quic/la/platform/vendor/opensource/audio
 git merge -X subtree=techpack/audio FETCH_HEAD -m "techpack/audio: merge $1"
 git fetch https://source.codeaurora.org/quic/la/platform/vendor/qcom-opensource/data-kernel $1
 git merge -X subtree=techpack/data FETCH_HEAD -m "techpack/data: merge $1"
+df -h
